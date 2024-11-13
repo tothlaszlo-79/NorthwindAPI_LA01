@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NorthwindAPI_LA01.Data;
 using NorthwindAPI_LA01.Domain;
 
 namespace NorthwindAPI_LA01.Controllers
 {
+    [Authorize]
     // Define the route for this controller and specify that it is an API controller
     [Route("api/[controller]")]
     [ApiController]
@@ -102,6 +104,12 @@ namespace NorthwindAPI_LA01.Controllers
             _context.Categories.Remove(category);
             _context.SaveChanges();
             return NoContent();
+        }
+
+        // Check if a category exists
+        private bool CategoryExists(int id)
+        {
+            return _context.Categories.Any(c => c.CategoryId == id);
         }
     }
 }
